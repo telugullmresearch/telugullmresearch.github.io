@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telugu LLM Research - Blog</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: white;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 10px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 60px 40px;
+            color: #2c3e50;
+            background: #f8f9fa;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .blog-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .article {
+            border-bottom: 1px solid #eee;
+            padding: 30px 0;
+        }
+
+        .article:last-child {
+            border-bottom: none;
+        }
+
+        .article h2 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+        }
+
+        .article h2 a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .article h2 a:hover {
+            color: #667eea;
+        }
+
+        .article-meta {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .article-excerpt {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .article-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .article-link:hover {
+            text-decoration: underline;
+        }
+
+        .error {
+            text-align: center;
+            color: #dc3545;
+            padding: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="index2.html" class="back-link">← Back to Research</a>
+            <h1>Research Blog</h1>
+            <p>Latest blog posts on Telugu LLM research</p>
+        </div>
+
+        <div class="blog-container">
+            <div id="loading" class="loading">
+                Loading articles...
+            </div>
+            <div id="articles"></div>
+            <div id="error" class="error" style="display: none;">
+                Unable to load articles. Please try again later.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Function to fetch articles from Medium RSS feed
+        async function fetchArticles() {
+            try {
+
+                // Only showing selected articles for now                
+                showSampleArticles();
+                return;
+
+
+                // Using a CORS proxy to fetch Medium RSS feed
+                const proxyUrl = 'https://api.allorigins.win/get?url=';
+                const mediumUrl = 'https://medium.com/@telugullmresearch/feed';
+                
+                const response = await fetch(proxyUrl + encodeURIComponent(mediumUrl));
+                const data = await response.json();
+                
+                // Parse the XML content
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(data.contents, 'text/xml');
+                
+                const items = xmlDoc.querySelectorAll('item');
+                const articlesContainer = document.getElementById('articles');
+                const loading = document.getElementById('loading');
+                
+                loading.style.display = 'none';
+                
+                if (items.length === 0) {
+                    // If no articles from Medium, show sample articles
+                    showSampleArticles();
+                    return;
+                }
+                
+                items.forEach((item, index) => {
+                    if (index < 10) { // Limit to 10 articles
+                        const title = item.querySelector('title').textContent;
+                        const link = item.querySelector('link').textContent;
+                        const pubDate = new Date(item.querySelector('pubDate').textContent);
+                        const description = item.querySelector('description').textContent;
+                        
+                        const articleDiv = document.createElement('div');
+                        articleDiv.className = 'article';
+                        articleDiv.innerHTML = `
+                            <h2><a href="${link}" target="_blank">${title}</a></h2>
+                            <div class="article-meta">${pubDate.toLocaleDateString()}</div>
+                            <div class="article-excerpt">${description.substring(0, 200)}...</div>
+                            <a href="${link}" target="_blank" class="article-link">Read more →</a>
+                        `;
+                        
+                        articlesContainer.appendChild(articleDiv);
+                    }
+                });
+                
+            } catch (error) {
+                console.error('Error fetching articles:', error);
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('error').style.display = 'block';
+            }
+        }
+
+        // Function to show your specific articles
+        function showSampleArticles() {
+            const articlesContainer = document.getElementById('articles');
+            const loading = document.getElementById('loading');
+            
+            loading.style.display = 'none'; // Add this line
+            
+            const yourArticles = [
+                {
+                    title: "Multilingual Evaluations in LLMs — a comparison",
+                    date: "March 2025",
+                    excerpt: "Exploring the question: What do the Large Language Model (LLM) creators mean when they claim multilingual capabilities, and how did they reach that conclusion.",
+                    link: "https://medium.com/@vbsowmya/multilingual-evaluations-in-llms-a-comparison-1d58b0fd9848"
+                },
+                {
+                    title: "Responsible Disclosure and Multilingual LLMs", 
+                    date: "March 2025",
+                    excerpt: "When Large Language Models claim to be multi-lingual, I think they should clearly write what they mean e.g., what languages they think they support well, and how did they reach that conclusion.",
+                    link: "https://medium.com/@vbsowmya/responsible-disclosure-and-multilingual-llms-0aef03d470f6"
+                },                
+
+                {
+                    title: "Quality issues in LLM Benchmark datasets", 
+                    date: "January 2025",
+                    excerpt: "Addressing the quality issues in the datasets we use for building (and worse, testing) our Large Language Models (LLMs)",
+                    link: "https://medium.com/@vbsowmya/quality-issues-in-llm-benchmark-datasets-324cc34e5511"
+                },
+                // Add more articles as needed
+            ];
+
+            yourArticles.forEach(article => {
+                const articleDiv = document.createElement('div');
+                articleDiv.className = 'article';
+                articleDiv.innerHTML = `
+                    <h2><a href="${article.link}" target="_blank">${article.title}</a></h2>
+                    <div class="article-meta">${article.date}</div>
+                    <div class="article-excerpt">${article.excerpt}</div>
+                    <a href="${article.link}" target="_blank" class="article-link">Read more →</a>
+                `;
+                articlesContainer.appendChild(articleDiv);
+            });
+        }
+
+        // Load articles when page loads
+        document.addEventListener('DOMContentLoaded', fetchArticles);
+    </script>
+</body>
+</html>

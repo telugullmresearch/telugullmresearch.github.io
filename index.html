@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telugu LLM Research</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(120, 219, 255, 0.03) 0%, transparent 50%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px 10px;
+        }
+
+        /* Header Section */
+        .header {
+            text-align: center;
+            padding: 80px 40px;
+            color: #2c3e50;
+            background: #f8f9fa;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 4.5rem;
+            margin-bottom: 30px;
+            color: #2c3e50;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: none;
+        }
+
+        .header p:first-of-type {
+            font-size: 1.4rem;
+            color: #666;
+            max-width: 1000px;
+            margin: 0 auto 20px auto;
+            line-height: 1.6;
+            white-space: nowrap;
+        }
+
+        .header p:last-child {
+            font-size: 1.1rem;
+            color: #666;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Main Content Cards */
+        .main-content {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+
+        /* Published Papers Section */
+        .papers-section {
+            padding: 60px 40px;
+            background: #f8f9fa;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .papers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .paper-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-left: 5px solid #667eea;
+        }
+
+        .paper-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+
+        .paper-card h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .paper-card p {
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .paper-meta {
+            font-size: 0.9rem;
+            color: #888;
+            font-style: italic;
+        }
+
+        /* Recent Updates Section - Separate card with aligned font sizes */
+        .updates-section {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin-bottom: 40px;
+            padding: 60px 40px;
+        }
+
+        .updates-section h2 {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            font-weight: bold;
+            margin-bottom: 40px;
+            text-align: center;
+            position: relative;
+            font-family: 'Georgia', serif;
+        }
+
+        .updates-section h2::after {
+            content: '';
+            width: 80px;
+            height: 4px;
+            background: #4a90e2;
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .updates {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .updates h3 {
+            color: #2c3e50;
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-family: Arial, sans-serif;
+        }
+        
+        .updates ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .updates li {
+            margin-bottom: 8px;
+            padding-left: 25px;
+            position: relative;
+            font-family: 'Georgia', serif;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+        
+        .updates li::before {
+            content: "📅";
+            position: absolute;
+            left: 0;
+            font-size: 14px;
+        }
+
+        /* Collaboration Section - Make it a proper card like others */
+        .collaboration-section {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin-bottom: 40px;
+            padding: 60px 40px;
+            text-align: center;
+            color: #333;
+        }
+
+        .collaboration-content h2 {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .collaboration-content h2::after {
+            content: '';
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .collaboration-content p {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            color: #666;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .contact-item {
+            background: #f8f9fa;
+            padding: 20px 30px;
+            border-radius: 10px;
+            transition: background 0.3s ease;
+            border: 1px solid #e9ecef;
+        }
+
+        .contact-item:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+        }
+
+        .contact-item a {
+            color: #2c3e50;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .contact-item a:hover {
+            text-decoration: underline;
+        }
+
+        .paper-link {
+            margin-top: 15px;
+        }
+
+        .paper-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .paper-link a:hover {
+            text-decoration: underline;
+        }
+
+        .news-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .news-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .papers-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-info {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            .papers-section,
+            .updates-section,
+            .collaboration-section {
+                padding: 40px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <header class="header">
+            <h1>Telugu LLM Research</h1>
+            <p>Advancing Natural Language Processing for Telugu Language through Large Language Models</p>
+            <p>Our research focuses on developing and improving Large Language Models (LLMs) for Telugu, one of the most widely spoken languages in India. This project aims to bridge the gap in Telugu NLP capabilities and contribute to multilingual AI research.</p>
+        </header>
+
+        <!-- Published Papers Section - First Card -->
+        <div class="main-content">
+            <section class="papers-section">
+                <h2 class="section-title">Research Papers</h2>
+                <div class="papers-grid">
+                    <div class="paper-card">    
+                        <h3>Test Set Quality in Multilingual LLM Evaluation</h3>
+                        <p>This paper focuses on the quality of the datasets used for evaluating multilingual LLMs for Telugu and French languages and argues that test sets should not be considered
+                            immutable and should be revisited, checked for correctness, and potentially versioned.</p>
+                        <div class="paper-meta">COLM 2025 • 1st Workshop on
+                            Multilingual Data Quality Signals</div>
+                        <div class="paper-link"><a href="https://arxiv.org/abs/2508.02635" target="_blank">📄 arXiv</a></div>
+                    </div>
+                    
+                    <div class="paper-card">
+                        <h3>MATA (మాట): Mindful Assessment of the Telugu Abilities
+                            of Large Language Models</h3>
+                        <p>We propose a novel approach for detecting and analyzing code-switching patterns in Telugu-English mixed text, with applications in social media analysis and language modeling.</p>
+                        <div class="paper-meta">Preprint Aug 2025 • Under Review</div>
+                        <div class="paper-link"><a href="https://arxiv.org/abs/2508.13526" target="_blank">📄 arXiv</a></div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Recent Updates Section - Second Card -->
+        <div class="updates-section">
+            <h2>📈 Recent Updates</h2>
+            <div class="updates">
+                <h3>Latest News</h3>
+                <ul>
+                    <li><strong>August 2025:</strong> 📄 Proposed a new benchmark <a href="https://arxiv.org/abs/2508.13526" target="_blank" class="news-link">(MATA)</a> for evaluating the abilities of Telugu LLMs</li>
+                    <li><strong>July 2025:</strong> 🎉 <a href="https://arxiv.org/abs/2508.02635" target="_blank" class="news-link">Test Set Quality paper</a> accepted at COLM 2025: 1st Workshop on Multilingual Data Quality Signals</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Collaboration and Contact Section -->
+        <section class="collaboration-section">
+            <div class="collaboration-content">
+                <h2>Collaboration and Contact</h2>
+                <p>We welcome collaborations with researchers, institutions, and organizations working on Telugu language processing and multilingual NLP. Join us in advancing the field of Telugu computational linguistics.</p>
+                
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <a href="https://github.com/telugullmresearch">🐙 GitHub Repository</a>
+                    </div>
+                    <div class="contact-item">
+                        <a href="blog.html">📚 Blog</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>
