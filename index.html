@@ -106,10 +106,22 @@
 
         .papers-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             gap: 30px;
             margin-top: 40px;
         }
+
+        @media (max-width: 1000px) {
+            .papers-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .papers-grid {
+                grid-template-columns: 1fr;
+            }
+        }        
 
         .paper-card {
             background: white;
@@ -360,7 +372,7 @@
                     <div class="paper-card">
                         <h3>MATA (మాట): Mindful Assessment of the Telugu Abilities
                             of Large Language Models</h3>
-                        <p>We propose a novel approach for detecting and analyzing code-switching patterns in Telugu-English mixed text, with applications in social media analysis and language modeling.</p>
+                        <p>We introduce MATA, a novel evaluation dataset to assess the ability of Large Language Models (LLMs) in Telugu language, comprising 729 carefully curated multiple-choice and open-ended questions that span diverse linguistic dimensions.</p>
                         <div class="paper-meta">LREC 2026 • Main Conference</div>
                         <div class="paper-link"><a href="https://arxiv.org/abs/2508.13526" target="_blank">📄 arXiv</a></div>
                     </div>
@@ -370,10 +382,17 @@
                         <p>We introduce MetricalARGS, the first taxonomy of poetry-related NLP tasks designed to evaluate LLMs on metrical poetry across four dimensions: Analysis, Retrieval, Generation, and Support.</p>
                         <div class="paper-meta">LREC 2026 • WILDRE8 Workshop</div>
                         <div class="paper-link"><a href="https://arxiv.org/abs/2510.08188" target="_blank">📄 arXiv</a></div>
-                    </div>                    
-                </div>
-            </section>
-        </div>
+                    </div> 
+                    
+                    <div class="paper-card">
+                        <h3>Translating Classical Poetry into Modern Prose</h3>
+                        <p>We introduce పద్యం2గద్యం (Padyam2Gadyam) a dataset for the task of poem-to-prose translation from 13th-17th Century Telugu Classical Poetry to contemporary Telugu and English prose. </p>
+                        <div class="paper-meta">June 2026 • Preprint</div>
+                        <div class="paper-link"><a href="https://arxiv.org/abs/2606.02806" target="_blank">📄 arXiv</a></div>
+                    </div>                      
+                </div>              
+            </section>        
+        </div>                  
 
         <!-- Recent Updates Section - Second Card -->
         <div class="updates-section">
@@ -381,6 +400,7 @@
             <div class="updates">
                 <h3>Latest News</h3>
                 <ul>
+                    <li><strong>June 2026:</strong> 📄 Proposed a new benchmark <a href="https://huggingface.co/datasets/TeluguLLMResearch/Padyam2Gadyam" target="_blank" class="news-link">Padyam2Gadyam,</a> a dataset for the task of poem-to-prose translation in both intra-lingual (TE–TE) and cross-lingual (TE–EN) settings.</li>
                     <li><strong>Apr 2026:</strong> 🎉 <a href="https://arxiv.org/abs/2508.13526" target="_blank" class="news-link">MetricalARGS</a> accepted at <a href="https://sanskrit.jnu.ac.in/conf/wildre8/" target="_blank" class="news-link"> LREC 2026: WILDRE8 Workshop</a></li>
                     <li><strong>Feb 2026:</strong> 🎉 <a href="https://arxiv.org/abs/2508.13526" target="_blank" class="news-link">MATA</a> accepted at <a href="https://lrec2026.info/" target="_blank" class="news-link"> LREC 2026: Main Conference</a></li>
                     <li><strong>Dec 2025:</strong> 🎉 <a href="https://aclanthology.org/2025.eval4nlp-1.14/" target="_blank" class="news-link">Test Set Quality paper</a> accepted at <a href="https://eval4nlp.github.io/2025/index.html" target="_blank" class="news-link"> AACL 2025: 5th Workshop on "Evaluation & Comparison of NLP Systems"</a></li>
